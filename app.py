@@ -1,15 +1,15 @@
 from nbclient import execute
 from db import Database
-from importar_csv import import_csv
-from funcoes import NetflixService
+from import_csv import import_csv
+from functions import NetflixService
 
 if __name__ == "__main__":
     db = Database()
-    conexao = db.conectar()
-    db.criar_tabela()
-    sucesso = import_csv(conexao)  # importa os dados do CSV
+    conection = db.connect_n()
+    db.creat_table()
+    sucess = import_csv(conection)  # importa os dados do CSV
 
-    if sucesso:
+    if sucess:
         print("Importação concluída com sucesso!")
     else:
         print("Importação concluída com erros. Verifique os logs para detalhes.")
@@ -17,7 +17,7 @@ if __name__ == "__main__":
 service = NetflixService()
 
 while True:
-    opcoes = input(
+    options = input(
         "\nEscolha uma opção:\n"
         "1 - Listar todos os títulos disponíveis\n"
         "2 - Listar títulos por tipo (filme ou série)\n"
@@ -27,63 +27,63 @@ while True:
         "0 - Sair\n"
     )
 
-    if opcoes == '1':
-        for titulo in service.listar_todos_titulos():
-            print(titulo)
+    if options == '1':
+        for title in service.list_all_titles():
+            print(title)
 
-    elif opcoes == '2':
-        tipo = input("Digite o tipo (Movie ou TV Show):\n ")
-        if tipo == 'Movie':
-            for titulo, ano, pais in service.listar_titulos_com_info('Movie'):
-                print(f"{titulo} ({ano}) - {pais}")
+    elif options == '2':
+        type = input("Digite o tipo (Movie ou TV Show):\n ")
+        if type == 'Movie':
+            for title, year, country in service.list_titles_by_type('Movie'):
+                print(f"{title} ({year}) - {country}")
         else:
-            for titulo, ano, pais in service.listar_titulos_com_info('TV Show'):
-                print(f"{titulo} ({ano}) - {pais}")
+            for title, year, country in service.list_titles_by_type('TV Show'):
+                print(f"{title} ({year}) - {country}")
 
-    elif opcoes == '3':
-        escolha = input(f" 1 - Movies / 2 - TV Shows / 3 - Total\n")
-        if escolha == '1':
+    elif options == '3':
+        choice = input(f" 1 - Movies / 2 - TV Shows / 3 - Total\n")
+        if choice == '1':
             print(
-                f"Quantidade de filmes: {service.quantidade_titulos('Movie')}")
-        elif escolha == '2':
+                f"Quantidade de filmes: {service.count_titles('Movie')}")
+        elif choice == '2':
             print(
-                f"Quantidade de séries: {service.quantidade_titulos('TV Show')}")
-        elif escolha == '3':
-            print(f"Quantidade total de títulos: {service.total_titulos()}")
-
-    elif opcoes == '4':
-        escolha = input(f" listar países: S / N\n")
-        if escolha.lower() == 's':
-            paises = service.listar_paises()
+                f"Quantidade de séries: {service.count_titles('TV Show')}")
+        elif choice == '3':
+            print(f"Quantidade total de títulos: {service.total_titles()}")
+    
+    elif options == '4':
+        choice = input(f" listar países: S / N\n")
+        if choice.lower() == 's':
+            countries = service.list_countries()
             print("Países disponíveis:")
-            for i, pais in enumerate(paises, start=1):
-                print(f"{i}. {pais}")
-            opcao = int(input("Digite o número do país desejado: "))
-            if 1 <= opcao <= len(paises):
-                pais_escolhido = paises[opcao - 1]
-                filmes = service.pais_desejado(pais_escolhido)
-                print(f"\nTítulos do país: {pais_escolhido}\n")
-                for titulo in filmes:
-                    print(f" - {titulo}")
+            for i, countrie in enumerate(countries, start=1):
+                print(f"{i}. {countrie}")
+            option = int(input("Digite o número do país desejado: "))
+            if 1 <= option <= len(countries):
+                chosen_country = countries[option - 1]
+                movies = service.desired_country(chosen_country)
+                print(f"\nTítulos do país: {chosen_country}\n")
+                for title in movies:
+                    print(f" - {title}")
             else:
                 print("Número inválido.")
              
 
 
-    elif opcoes == '5':
-        anos = service.listar_anos()
+    elif options == '5':
+        years = service.list_years()
         print("Anos disponíveis:")
-        for i, ano in enumerate(anos, start=1):
-                print(f"{i}. {ano}")
+        for i, year in enumerate(years, start=1):
+                print(f"{i}. {year}")
 
         escolha_ano = input("Digite o número do ano: ")
         try:
-            n_escolhido = int(escolha_ano)
-            if 1 <= n_escolhido <= len(anos):
-                    ano_escolhido = anos[n_escolhido - 1]
-                    filmes = service.titulos_por_ano(ano_escolhido)
-                    print(f"\nTítulos de {ano_escolhido}:")
-                    for f in filmes:
+            chosen_number = int(escolha_ano)
+            if 1 <= chosen_number <= len(years):
+                    chosen_year = years[chosen_number - 1]
+                    movies = service.titles_by_year(chosen_year)
+                    print(f"\nTítulos de {chosen_year}:")
+                    for f in movies:
                         print(" ", f)
             else:
                     print("Número inválido.")
@@ -91,7 +91,7 @@ while True:
                 print("Digite um número válido.")
 
 
-    elif opcoes == '0':
+    elif options == '0':
         print("Saindo do programa.")
         break
             

@@ -4,12 +4,12 @@ class Database:
     def __init__(self, db_name="netflix.db"):
         self.db_name = db_name
 
-    def conectar(self):
+    def connect_n(self):
         return sqlite3.connect(self.db_name)
 
-    def criar_tabela(self):
-        conexao = self.conectar()
-        cursor = conexao.cursor()
+    def creat_table(self):
+        conection = self.connect_n()
+        cursor = conection.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS netflix (
             show_id TEXT PRIMARY KEY,
@@ -26,4 +26,4 @@ class Database:
             description TEXT
         )
     ''')
-        conexao.commit()
+        conection.commit()
