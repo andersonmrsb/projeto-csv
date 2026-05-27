@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ValidationError
 
-class Netflix(BaseModel):# VALIDAÇÃO DE DADOS COM PYDANTIC                      
+
+class Netflix(BaseModel):  # VALIDAÇÃO DE DADOS COM PYDANTIC
     show_id: str
     type: str
     title: str
@@ -13,5 +14,3 @@ class Netflix(BaseModel):# VALIDAÇÃO DE DADOS COM PYDANTIC
     duration: str | None
     listed_in: str | None
     description: str | None
-
-
