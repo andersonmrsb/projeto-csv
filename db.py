@@ -1,15 +1,20 @@
 import sqlite3
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 class Database:
-    def __init__(self, db_name="netflix.db"):
-        self.db_name = db_name
+    def __init__(self):
+        self.DB_NAME = os.getenv("DB_NAME", "netflix.db")
 
-    def connect_n(self):
-        return sqlite3.connect(self.db_name)
+    def connect_db(self):
+        return sqlite3.connect(self.DB_NAME)
 
-    def creat_table(self):
-        conection = self.connect_n()
+    def create_table(self):
+        conection = self.connect_db()
         cursor = conection.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS netflix (
@@ -28,3 +33,4 @@ class Database:
         )
     ''')
         conection.close()
+

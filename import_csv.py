@@ -2,8 +2,8 @@ import csv
 from pydantic import ValidationError
 from netflix_model import Netflix
 
-def import_csv(conexao, caminho_csv="netflix_titles.csv"):
-    cursor = conexao.cursor()
+def import_csv(connection, caminho_csv="netflix_titles.csv"):
+    cursor = connection.cursor()
     sucess = True
 
     with open(caminho_csv, 'r', encoding='utf-8-sig') as file:
@@ -24,5 +24,5 @@ def import_csv(conexao, caminho_csv="netflix_titles.csv"):
                 print(f"Erro de validação para o registro {row['show_id']}: {e}")
                 sucess = False
 
-    conexao.commit()
+    connection.commit()
     return sucess

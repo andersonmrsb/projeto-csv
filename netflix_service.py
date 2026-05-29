@@ -7,14 +7,14 @@ class NetflixService:
 
     # 1 - já funcionando: listar todos os títulos
     def list_all_titles(self):
-        results = self.repo.execut_query("SELECT title FROM netflix")
+        results = self.repo.execute_query("SELECT title FROM netflix")
         if results:
             return [line[0] for line in results]
 
     # 2 - listar títulos por tipo (Movie ou TV Show)
 
     def list_titles_by_type(self, content_type):
-        return self.repo.execut_query(
+        return self.repo.execute_query(
             "SELECT title, release_year, country FROM netflix WHERE type = ?",
             (content_type,)
         )
@@ -23,7 +23,7 @@ class NetflixService:
     def count_titles(self, content_type=None):
         query = "SELECT COUNT(*) FROM netflix WHERE type = ?" if content_type else "SELECT COUNT(*) FROM netflix"
         params = (content_type,) if content_type else ()
-        result = self.repo.execut_query(query, params)
+        result = self.repo.execute_query(query, params)
         return result[0][0] if result else 0
 
     # 4 - listar filmes de cada país
@@ -31,7 +31,7 @@ class NetflixService:
     def list_countries(self):
         # DISTINCT evita repetição de países
         query = "SELECT country FROM netflix WHERE country != '' AND country != 'Desconhecido' ORDER BY country"
-        results = self.repo.execut_query(query)
+        results = self.repo.execute_query(query)
         countries = []
         for line in results:
             if line[0]:
@@ -43,17 +43,17 @@ class NetflixService:
 
     def list_titles_by_country(self, country):
         query = "SELECT title FROM netflix WHERE country LIKE ?"
-        results = self.repo.execut_query(query, (f"%{country}%",))
+        results = self.repo.execute_query(query, (f"%{country}%",))
         return [line[0] for line in results] if results else []
 
     # 5 - listar filmes de cada ano
 
     def list_years(self):
         query = "SELECT DISTINCT release_year FROM netflix WHERE release_year IS NOT NULL ORDER BY release_year"
-        results = self.repo.execut_query(query)
+        results = self.repo.execute_query(query)
         return [line[0] for line in results] if results else []
 
     def titles_by_year(self, ano):
         query = "SELECT title FROM netflix WHERE release_year = ?"
-        results = self.repo.execut_query(query, (ano,))
+        results = self.repo.execute_query(query, (ano,))
         return [line[0] for line in results] if results else []
